@@ -99,6 +99,8 @@ graph TD
 ### Rationale for Vanilla + Web Components
 Given the project's simplicity, performance requirements, and static hosting constraints, vanilla JavaScript with modern web standards provides the optimal balance of maintainability and performance.
 
+> Note: For MVP scaffolding we use Preact + Vite + Tailwind per DD-002 to speed execution, while keeping components framework-light and easily portable to vanilla if needed later.
+
 ---
 
 ## UX Design Specification

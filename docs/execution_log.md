@@ -43,6 +43,34 @@ This log tracks actual implementation progress against the product backlog, reco
 
 ---
 
+## 2025-09-07 — Repo Scaffolding [Execution → QA]
+- Feature: Project scaffolding with Vite + TypeScript + Preact + Tailwind
+- Linked Backlog: Epic 1.1 (Project Structure & Hygiene)
+- Linked Design Decisions: DD-002, DD-006
+- Changes:
+  - Added package.json scripts (dev, build, preview, test)
+  - Configured Vite with Preact, base path for GitHub Pages
+  - Tailwind + PostCSS setup
+  - TypeScript strict config and path aliases
+  - ESLint + Prettier + EditorConfig
+  - Basic src layout and placeholder App
+  - Vitest setup and a starter unit test
+  - GitHub Actions CI and Pages deploy workflows
+- Suggested Tests:
+  - Core prompt-engine unit tests (happy path + edge cases)
+  - State persistence/restore tests
+  - Rendering test for App shell
+
+---
+
+## 2025-09-07 — UX + Integrations [Execution → QA]
+- Features: Integration links (ChatGPT/Claude/Perplexity/Cursor), expanded accordion (Hosting/Docs/Advanced), debounced persistence, tests
+- Linked Design Decisions: DD-003 (UX), DD-005 (State), DD-007 (Integrations)
+- Tests Added: integrations URL encoding, state subscribe/emit, render smoke test
+- Build: vite production build succeeded; size ~24KB JS + 7.5KB CSS (pre gzip)
+
+---
+
 ## Development Timeline Template
 ```markdown
 ## YYYY-MM-DD: [Sprint/Milestone Name]

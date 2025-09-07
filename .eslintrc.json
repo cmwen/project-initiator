@@ -1,0 +1,13 @@
+{
+  "root": true,
+  "env": { "browser": true, "es2021": true, "node": true },
+  "extends": ["eslint:recommended", "plugin:react/recommended", "prettier"],
+  "parserOptions": { "ecmaVersion": "latest", "sourceType": "module" },
+  "settings": { "react": { "pragma": "h", "version": "detect" } },
+  "globals": { "describe": "readonly", "it": "readonly", "expect": "readonly" },
+  "plugins": ["react", "prettier"],
+  "rules": {
+    "prettier/prettier": ["error"],
+    "react/react-in-jsx-scope": "off"
+  }
+}

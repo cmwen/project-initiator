@@ -6,6 +6,16 @@ A static web app that helps developers craft high-quality, vendor-neutral prompt
 
 *Development setup coming soon - currently in foundation phase*
 
+## Quickstart
+
+- Install Node.js 20+
+- Install dependencies: `npm ci`
+- Start dev server: `npm run dev`
+- Run tests: `npm test`
+- Build: `npm run build`
+
+Deployed via GitHub Pages from `dist/` with base `/project-initiator/`.
+
 ## Problem We're Solving
 
 Many developers struggle to create effective "first prompts" when asking coding agents to start new projects. They often jump in without clarifying scope, constraints, delivery targets, or downstream needs (publishing, CI/CD, licensing, etc.). This leads to misaligned outputs, rework, and wasted time.
