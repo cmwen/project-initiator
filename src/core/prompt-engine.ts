@@ -5,7 +5,14 @@ export function generatePrompt(state: ProjectState): PromptSection[] {
   const sections: PromptSection[] = [];
   sections.push({
     heading: `Kick off: ${state.projectType}`,
-    content: `Context: Building a ${state.projectType} targeting ${state.runtime}.\nHosting: ${state.hosting}.`,
+    content: `Context: Building a ${state.projectType} targeting ${state.runtime}.\n` +
+      `Targets: ${(state.targets ?? ['web']).join(', ')}.\n` +
+      `Runtimes: ${(state.runtimes ?? [state.runtime]).join(', ')}.\n` +
+      (state.mobilePlatforms && state.mobilePlatforms.length ? `Mobile: ${state.mobilePlatforms.join(', ')}.\n` : '') +
+      `Data: ${(state.dataStores ?? ['file']).join(', ')}.\n` +
+      `Features: ${(state.features ?? []).join(', ') || 'none'}.\n` +
+  `Repository: ${(state.repoMode ?? 'single')}${state.repoMode === 'monorepo' ? ` (${(state.monorepoTooling ?? []).join(', ') || 'no tooling selected'})` : ''}.\n` +
+  `Hosting: ${state.hosting}.`,
     priority: 'required'
   });
 

@@ -4,6 +4,14 @@ export type Runtime = 'node' | 'browser' | 'python' | 'rust' | 'go';
 export interface ProjectState {
   projectType: ProjectType;
   runtime: Runtime;
+  theme?: 'system' | 'light' | 'dark';
+  targets?: Array<'web' | 'cli' | 'mobile' | 'mcp' | 'api' | 'library'>;
+  runtimes?: Runtime[];
+  mobilePlatforms?: Array<'ios' | 'android'>;
+  dataStores?: Array<'file' | 'database' | 'cloud'>;
+  features?: Array<'dark-theme' | 'cli' | 'mobile-app'>;
+  repoMode?: 'single' | 'monorepo';
+  monorepoTooling?: Array<'workspace-npm' | 'workspace-pnpm' | 'workspace-yarn' | 'turbo' | 'nx'>;
   quality: {
     linting: boolean;
     testing: 'none' | 'unit' | 'integration' | 'e2e';
@@ -32,6 +40,14 @@ export interface ProjectState {
 export const defaultState: ProjectState = {
   projectType: 'web-spa',
   runtime: 'browser',
+  theme: 'system',
+  targets: ['web'],
+  runtimes: ['browser'],
+  mobilePlatforms: [],
+  dataStores: ['file'],
+  features: ['dark-theme'],
+  repoMode: 'single',
+  monorepoTooling: [],
   quality: { linting: true, testing: 'unit', ci: true, formatting: true },
   hosting: 'github-pages',
   deployment: { customDomain: false, seo: true, analytics: false },

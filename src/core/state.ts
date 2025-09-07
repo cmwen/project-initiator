@@ -10,6 +10,7 @@ class State {
 
   set(partial: Partial<ProjectState>) {
     this.state = { ...this.state, ...partial };
+  this.applyTheme();
     this.queuePersist();
     this.emit();
   }
@@ -30,8 +31,16 @@ class State {
   }
 
   private persist() {
-    try { localStorage.setItem('app-state', JSON.stringify(this.state)); } catch {}
-    history.replaceState(null, '', `#${btoa(unescape(encodeURIComponent(JSON.stringify(this.state))))}`);
+    try {
+      localStorage.setItem('app-state', JSON.stringify(this.state));
+    } catch (err) {
+      // Ignore storage quota/security errors in private/incognito modes
+    }
+    history.replaceState(
+      null,
+      '',
+      `#${btoa(unescape(encodeURIComponent(JSON.stringify(this.state))))}`,
+    );
   }
 
   restore() {
@@ -43,8 +52,22 @@ class State {
         const raw = localStorage.getItem('app-state');
         if (raw) this.state = { ...this.state, ...JSON.parse(raw) };
       }
-    } catch {}
+    } catch (err) {
+      // Ignore malformed hash/localStorage JSON; fall back to defaults
+    }
+    this.applyTheme();
     this.emit();
+  }
+
+  private applyTheme() {
+    const doc = document.documentElement;
+    const pref = this.state.theme ?? 'system';
+    let theme = pref;
+    if (pref === 'system') {
+      const m = window.matchMedia('(prefers-color-scheme: dark)');
+      theme = m.matches ? 'dark' : 'light';
+    }
+    doc.setAttribute('data-theme', theme);
   }
 }
 

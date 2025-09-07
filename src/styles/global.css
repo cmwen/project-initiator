@@ -7,6 +7,14 @@
   --accent: #3b82f6;
 }
 
+[data-theme='light'] {
+  --bg: #f7fafc; /* slightly darker than pure to improve contrast */
+  --card: #ffffff;
+  --text: #0a0f1a; /* near-black for better readability */
+  --muted: #4b5563; /* gray-600 for better light contrast */
+  --accent: #1d4ed8; /* deeper blue for contrast */
+}
+
 html, body, #root {
   height: 100%;
 }

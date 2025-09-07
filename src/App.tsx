@@ -13,9 +13,21 @@ export default function App() {
     <div className="min-h-screen p-4 sm:p-6 lg:p-8">
       <header className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-semibold tracking-tight">Project Initiator</h1>
-        <nav className="flex gap-2 text-sm text-gray-300">
-          <button className="hover:text-white" onClick={() => location.reload()}>Reset</button>
-          <button className="hover:text-white" onClick={() => { /* preset modal placeholder */ }}>Presets</button>
+        <nav className="flex items-center gap-3 text-sm text-[var(--muted)]">
+          <label className="flex items-center gap-2">
+            Theme
+            <select aria-label="Theme"
+              className="bg-transparent border border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-brand-600"
+              onChange={(e) => appState.set({ theme: (e.currentTarget as HTMLSelectElement).value as any })}
+              value={appState.get().theme ?? 'system'}
+            >
+              <option value="system">System</option>
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+            </select>
+          </label>
+          <button aria-label="Reset state" className="hover:text-[var(--text)]" onClick={() => location.reload()}>Reset</button>
+          <button aria-label="Open presets" className="hover:text-[var(--text)]" onClick={() => { /* preset modal placeholder */ }}>Presets</button>
         </nav>
       </header>
 

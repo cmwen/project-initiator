@@ -79,6 +79,22 @@ This log tracks actual implementation progress against the product backlog, reco
 
 ---
 
+## 2025-09-07 — Theme & Multi-select [Execution → QA]
+- Theme toggle added (system/light/dark) with CSS variable themes
+- Multi-select options: targets, runtimes, mobile platforms, data layer, features
+- Prompt generation includes new selections
+- Tests and production build pass
+
+---
+
+## 2025-09-07 — Monorepo support [Execution → QA]
+- Added repo mode (single/monorepo) and tooling options (npm/pnpm/yarn workspaces, Turbo, Nx)
+- Expanded Targets to include mcp/api/library alongside web/cli/mobile
+- Prompt now includes repository mode and tooling
+- Unit test added to verify prompt content
+
+---
+
 ## Development Timeline Template
 ```markdown
 ## YYYY-MM-DD: [Sprint/Milestone Name]
