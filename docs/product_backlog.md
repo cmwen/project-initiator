@@ -21,9 +21,14 @@ This living backlog translates the vision for Project Initiator into prioritized
 - [x] Language-appropriate `.gitignore` is present (JavaScript/Node.js focused)
 - [x] Basic folder structure exists: `src/`, `docs/`
 - [x] `/docs/*` skeleton files exist and are linked from README
-- [ ] Package.json with basic dependencies for static site development
+- [ ] **Package.json with development dependencies** (Vite, TypeScript, ESLint, Prettier, Vitest)
+- [ ] **Source code structure**: `src/components/`, `src/core/`, `src/types/`, `src/utils/`
+- [ ] **Build configuration**: `vite.config.ts`, `tsconfig.json`, `eslint.config.js`
+- [ ] **Testing setup**: `tests/` directory with basic test configuration
 - [ ] Basic CI workflow for linting and build validation
 - [ ] Entry created in `/docs/execution_log.md` linked in `/docs/governance_traceability.md`
+
+**Design Reference**: See `/docs/design.md` Project Structure section for detailed specifications.
 
 ### Story 1.2: Documentation Foundation Setup
 **Priority**: P0  
@@ -86,7 +91,18 @@ This living backlog translates the vision for Project Initiator into prioritized
 **Vision Link**: Core Interaction Principles, Success Criteria  
 **Status**: Not Started
 
-### Story 3.1: Preset Templates for Common Scenarios
+### Story 3.1: Direct Coding Assistant Integration
+**Priority**: P1  
+**Acceptance Criteria**:
+- One-click sharing to ChatGPT, Claude, Cursor with pre-populated prompts
+- URL-based integration that maintains privacy (no API keys required)
+- Graceful fallbacks when integration URLs change or fail
+- Mobile-optimized integration buttons with clear labeling
+- User preference storage for default preferred assistant
+- Integration usage analytics (privacy-preserving) to track adoption
+- Clear user messaging about data sharing when clicking external links
+
+### Story 3.2: Preset Templates for Common Scenarios
 **Priority**: P1  
 **Acceptance Criteria**:
 - 3 initial presets: "CLI Tool", "Web App (SPA)", "JavaScript Library"
@@ -95,7 +111,7 @@ This living backlog translates the vision for Project Initiator into prioritized
 - Users can modify preset selections after applying
 - Additional presets: "MCP Server", "REST API" (based on user feedback)
 
-### Story 3.2: Shareable State via URL
+### Story 3.3: Shareable State via URL
 **Priority**: P1  
 **Acceptance Criteria**:
 - Current selections encoded in URL hash/query parameters
@@ -104,7 +120,7 @@ This living backlog translates the vision for Project Initiator into prioritized
 - Share button provides copy-to-clipboard for URL
 - No sensitive data in URLs (maintain privacy principle)
 
-### Story 3.3: Import/Export Decision Profiles
+### Story 3.4: Import/Export Decision Profiles
 **Priority**: P1  
 **Acceptance Criteria**:
 - Export current selections as JSON file

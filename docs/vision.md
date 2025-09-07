@@ -1,6 +1,32 @@
-# Vision Log — Project Initiator
+# Vision Log — Project Init## Success Crit## Assumption## Risks and Open Questions
+- Cognitive overload: Long checklists can intimidate users. Mitigation: presets, progressive steps, defaults.
+- Prompt quality variance: Different agents interpret prompts differently. Mitigation: structure prompts with clear sections and acceptance criteria.
+- Scope creep into scaffolding: We are not Yeoman; we help think and prompt. Mitigation: integrate with, not replace, scaffolding tools.
+- Telemetry/privacy: Collecting metrics conflicts with local-first. Mitigation: local-only by default; explicit opt-in for anonymous metrics.
+- Content drift: Best practices evolve quickly. Mitigation: community contributions via PRs; versioned templates.
+- Mobile UX complexity: Ensuring excellent mobile experience while maintaining desktop functionality. Mitigation: mobile-first design approach with progressive enhancement.
+- External integration dependencies: Chatbot platforms may change URL patterns or APIs. Mitigation: graceful fallbacks and modular integration system.
 
-Tag: [Vision → Product]
+Open questions
+- Should we add import/export of JSON "decision profiles" at v0 or v0.1?
+- Which stacks to feature in presets first (JS/TS, Python, Rust, Go)?
+- Add MCP-specific flows now or later? (Server vs Client templates)
+- Which coding assistants should be prioritized for direct integration?
+- How to handle mobile keyboard interaction with accordion sections?nts, and Trade-offs
+- Hosting: GitHub Pages serves static HTML/CSS/JS; no server runtime. One Pages site per repo; project sites are at <owner>.github.io/<repo> (per GitHub Docs). Custom domains optional.
+- Offline/local-first: Client can store state locally (LocalStorage). Full offline via PWA is possible but optional for v1; adds complexity.
+- Agent neutrality: Generated prompt should work across coding agents (don't hardcode proprietary features). Direct integration with popular assistants via URL-based sharing.
+- Privacy: No code or selections leave the browser unless the user explicitly exports/shares.
+- Mobile-first: Interface must work excellently on mobile devices with touch interaction patterns; desktop is enhanced experience.
+- Simplicity over exhaustiveness: Start with the most impactful choices. Avoid overwhelming users with jargon; use progressive disclosure and tooltips.nd Initial Metrics
+- [Vision → Product] 70%+ prompt completion rate (user reaches "Copy prompt") in first session.
+- [Vision → Product] Median time-to-complete < 5 minutes for default flow.
+- [Vision → Product] 50%+ of prompts copied at least once; 30%+ shared to coding assistants directly.
+- [Vision → Product] Post-use survey (1–5): "Prompt covered my needs" ≥ 4.2 avg.
+- [Vision → Product] Return visits (7-day) ≥ 20% once stable.
+- [Vision → Product] Mobile completion rate ≥ 80% of desktop rate (mobile-first success).
+
+Note: For v0, use anonymous, privacy-preserving telemetry if included at all; otherwise run local UX tests and collect manual feedback.ag: [Vision → Product]
 
 Last updated: 2025-09-07
 
@@ -120,14 +146,16 @@ The generated prompt follows a consistent, scannable format.
 
 ## Prioritized Backlog (high-level)
 - [Vision → Product] P0: Minimal UI with decision checklist, live prompt preview, copy button
+- [Vision → Product] P0: Mobile-first responsive design with accordion navigation
 - [Vision → Product] P0: Presets (CLI/Web app/Library) with sensible defaults
 - [Vision → Product] P0: Local save/restore (LocalStorage), reset
+- [Vision → Product] P1: Direct integration links to ChatGPT, Claude, Cursor, and other coding assistants
 - [Vision → Product] P1: Shareable URL (encode state in query/hash)
 - [Vision → Product] P1: Export/import JSON decision profile
 - [Vision → Product] P1: Prompt templates for MCP Server/Client, REST API, Library
 - [Vision → Product] P2: Theming and accessibility polish
 - [Vision → Product] P2: Optional PWA for offline-first
-- [Vision → Product] P2: Vendor-specific toggles (e.g., GitHub Actions templates)
+- [Vision → Product] P2: Advanced assistant integrations (API-based where available)
 
 ## Milestones and Acceptance Criteria
 
@@ -195,3 +223,5 @@ Out-of-scope
 3) Do you want shareable URLs in v0, or is that okay in v0.2?
 4) Any branding constraints (name, logo, color scheme), or keep minimal?
 5) Preference on license (default MIT) and telemetry (opt-in only vs none)?
+6) Which coding assistants should be prioritized for direct integration (ChatGPT, Claude, Cursor priority)?
+7) Should mobile experience support swipe gestures for section navigation?

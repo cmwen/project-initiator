@@ -17,6 +17,7 @@ Project Initiator guides users through key considerations, then generates a comp
 ### Core Documents
 - **[Vision](docs/vision.md)** - Complete project vision, user scenarios, and success criteria
 - **[Product Backlog](docs/product_backlog.md)** - Living backlog with prioritized features and acceptance criteria
+- **[Design](docs/design.md)** - Technical architecture, UX design, and implementation specifications
 - **[Design Decisions](docs/design_decisions.md)** - Architectural choices and technical trade-offs
 - **[QA Plan](docs/qa_plan.md)** - Testing strategy, quality gates, and acceptance criteria
 - **[Execution Log](docs/execution_log.md)** - Development progress and implementation decisions
@@ -28,6 +29,8 @@ Project Initiator guides users through key considerations, then generates a comp
 - **Preset Templates**: Common scenarios (CLI tool, web app, library) with sensible defaults
 - **Local State Management**: Privacy-first approach with browser-only persistence
 - **Shareable URLs**: Export decision state for collaboration
+- **Direct Integration**: One-click sharing to ChatGPT, Claude, Cursor, and other coding assistants
+- **Mobile-First Design**: Touch-optimized interface with responsive accordion navigation
 
 ## Architecture
 
