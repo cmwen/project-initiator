@@ -13,7 +13,8 @@ export function DecisionAccordion() {
         <div className="p-3 pt-0 text-sm">
           <label className="block mb-2">Type</label>
           <select
-            className="bg-transparent border border-gray-600 rounded px-2 py-1"
+            aria-label="Project Type"
+            className="bg-transparent border border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-brand-600"
             value={state.projectType}
             onChange={(e) => appState.set({ projectType: (e.currentTarget as HTMLSelectElement).value as any })}
           >
@@ -32,7 +33,8 @@ export function DecisionAccordion() {
         <div className="p-3 pt-0 text-sm">
           <label className="block mb-2">Runtime</label>
           <select
-            className="bg-transparent border border-gray-600 rounded px-2 py-1"
+            aria-label="Runtime"
+            className="bg-transparent border border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-brand-600"
             value={state.runtime}
             onChange={(e) => appState.set({ runtime: (e.currentTarget as HTMLSelectElement).value as any })}
           >
@@ -53,7 +55,7 @@ export function DecisionAccordion() {
           <label className="flex items-center gap-2"><input type="checkbox" checked={state.quality.formatting} onChange={(e) => appState.set({ quality: { ...state.quality, formatting: (e.currentTarget as HTMLInputElement).checked } })}/> Formatting</label>
           <div>
             <label className="block mb-1">Testing</label>
-            <select className="bg-transparent border border-gray-600 rounded px-2 py-1" value={state.quality.testing} onChange={(e) => appState.set({ quality: { ...state.quality, testing: (e.currentTarget as HTMLSelectElement).value as any } })}>
+            <select className="bg-transparent border border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-brand-600" value={state.quality.testing} onChange={(e) => appState.set({ quality: { ...state.quality, testing: (e.currentTarget as HTMLSelectElement).value as any } })}>
               <option value="none">None</option>
               <option value="unit">Unit</option>
               <option value="integration">Integration</option>
@@ -67,7 +69,7 @@ export function DecisionAccordion() {
         <summary className="cursor-pointer select-none p-3 text-sm font-medium">4. Hosting</summary>
         <div className="p-3 pt-0 text-sm">
           <label className="block mb-2">Host</label>
-          <select className="bg-transparent border border-gray-600 rounded px-2 py-1" value={state.hosting} onChange={(e) => appState.set({ hosting: (e.currentTarget as HTMLSelectElement).value as any })}>
+          <select className="bg-transparent border border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-brand-600" value={state.hosting} onChange={(e) => appState.set({ hosting: (e.currentTarget as HTMLSelectElement).value as any })}>
             <option value="github-pages">GitHub Pages</option>
             <option value="vercel">Vercel</option>
             <option value="netlify">Netlify</option>
@@ -82,7 +84,7 @@ export function DecisionAccordion() {
           <label className="flex items-center gap-2"><input type="checkbox" checked={state.documentation.readme} onChange={(e) => appState.set({ documentation: { ...state.documentation, readme: (e.currentTarget as HTMLInputElement).checked } })}/> README</label>
           <label className="flex items-center gap-2">
             License
-            <select className="bg-transparent border border-gray-600 rounded px-2 py-1" value={state.documentation.license} onChange={(e) => appState.set({ documentation: { ...state.documentation, license: (e.currentTarget as HTMLSelectElement).value as any } })}>
+            <select className="bg-transparent border border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-brand-600" value={state.documentation.license} onChange={(e) => appState.set({ documentation: { ...state.documentation, license: (e.currentTarget as HTMLSelectElement).value as any } })}>
               <option value="MIT">MIT</option>
               <option value="Apache-2.0">Apache-2.0</option>
               <option value="GPL-3.0">GPL-3.0</option>
@@ -98,7 +100,7 @@ export function DecisionAccordion() {
         <summary className="cursor-pointer select-none p-3 text-sm font-medium">6. Advanced</summary>
         <div className="p-3 pt-0 text-sm grid grid-cols-2 gap-2">
           <label className="flex items-center gap-2">Secrets
-            <select className="bg-transparent border border-gray-600 rounded px-2 py-1" value={state.advanced.secrets} onChange={(e) => appState.set({ advanced: { ...state.advanced, secrets: (e.currentTarget as HTMLSelectElement).value as any } })}>
+            <select className="bg-transparent border border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-brand-600" value={state.advanced.secrets} onChange={(e) => appState.set({ advanced: { ...state.advanced, secrets: (e.currentTarget as HTMLSelectElement).value as any } })}>
               <option value="none">None</option>
               <option value="env">.env</option>
               <option value="ci-secrets">CI Secrets</option>

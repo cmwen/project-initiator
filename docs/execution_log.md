@@ -71,6 +71,14 @@ This log tracks actual implementation progress against the product backlog, reco
 
 ---
 
+## 2025-09-07 — Share & A11y polish [Execution → QA]
+- Added Copy success toast, Share URL, and Export JSON (DD-003, DD-005)
+- Included favicon and manifest link (PWA prep)
+- Basic accessibility improvements (aria-labels, focus rings)
+- Added unit tests for share URL utility
+
+---
+
 ## Development Timeline Template
 ```markdown
 ## YYYY-MM-DD: [Sprint/Milestone Name]
