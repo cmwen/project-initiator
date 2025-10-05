@@ -6,6 +6,17 @@ export function DecisionAccordion() {
   const [state, setState] = useState<ProjectState>(appState.get());
   useEffect(() => appState.subscribe(setState), []);
 
+  // Handle accordion animations
+  useEffect(() => {
+    const details = document.querySelectorAll('details');
+    details.forEach(detail => {
+      detail.addEventListener('toggle', () => {
+        // Force reflow to ensure smooth animation
+        detail.offsetHeight;
+      });
+    });
+  }, []);
+
   return (
     <div className="space-y-3">
       <details className="rounded border border-[var(--muted)]/30" open>
@@ -36,56 +47,80 @@ export function DecisionAccordion() {
         <summary className="cursor-pointer select-none p-3 text-sm font-medium text-[var(--text)]">2. Project Type(s)</summary>
         <div className="p-3 pt-0 text-sm space-y-3">
           {state.repoMode === 'monorepo' ? (
-            <div className="grid grid-cols-2 gap-2">
-              {(
-                [
-                  'cli',
-                  'web-spa',
-                  'web-mpa',
-                  'api-rest',
-                  'api-graphql',
-                  'library',
-                  'mcp-server',
-                  'mcp-client',
-                  'vscode-extension',
-                  'browser-extension',
-                ] as const
-              ).map((p) => (
-                <label className="flex items-center gap-2" key={p}>
-                  <input
-                    type="checkbox"
-                    checked={state.projectTypes.includes(p)}
-                    onChange={(e) => {
-                      const checked = (e.currentTarget as HTMLInputElement).checked;
-                      const list = new Set(state.projectTypes);
-                      checked ? list.add(p) : list.delete(p);
-                      appState.set({ projectTypes: Array.from(list) });
-                    }}
-                  />
-                  {p}
-                </label>
-              ))}
+            <div className="space-y-2">
+              <div className="grid grid-cols-2 gap-2">
+                {(
+                  [
+                    'web-spa',
+                    'web-mpa',
+                    'api-rest',
+                    'cli',
+                    'library',
+                    'api-graphql',
+                    'mcp-server',
+                    'mcp-client',
+                    'vscode-extension',
+                    'browser-extension',
+                    'custom',
+                  ] as const
+                ).map((p) => (
+                  <label className="flex items-center gap-2" key={p}>
+                    <input
+                      type="checkbox"
+                      checked={state.projectTypes.includes(p)}
+                      onChange={(e) => {
+                        const checked = (e.currentTarget as HTMLInputElement).checked;
+                        const list = new Set(state.projectTypes);
+                        checked ? list.add(p) : list.delete(p);
+                        appState.set({ projectTypes: Array.from(list) });
+                      }}
+                    />
+                    {p === 'custom' ? 'Custom/Other' : p}
+                  </label>
+                ))}
+              </div>
+              {state.projectTypes.includes('custom') && (
+                <input
+                  type="text"
+                  placeholder="Specify custom project type..."
+                  className="w-full bg-transparent border border-[var(--muted)]/40 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-brand-600"
+                  value={state.customProjectType ?? ''}
+                  onChange={(e) => appState.set({ customProjectType: (e.currentTarget as HTMLInputElement).value })}
+                />
+              )}
             </div>
           ) : (
-            <select
-              aria-label="Project Type"
-              className="bg-transparent border border-[var(--muted)]/40 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-brand-600"
-              value={state.projectTypes[0] ?? 'web-spa'}
-              onChange={(e) =>
-                appState.set({ projectTypes: [(e.currentTarget as HTMLSelectElement).value as any] })
-              }
-            >
-              <option value="cli">CLI</option>
-              <option value="web-spa">Web App (SPA)</option>
-              <option value="web-mpa">Web App (MPA)</option>
-              <option value="api-rest">API (REST)</option>
-              <option value="api-graphql">API (GraphQL)</option>
-              <option value="library">Library/SDK</option>
-              <option value="mcp-server">MCP Server</option>
-              <option value="mcp-client">MCP Client</option>
-              <option value="vscode-extension">VS Code Extension</option>
-              <option value="browser-extension">Browser Extension</option>
-            </select>
+            <div className="space-y-2">
+              <select
+                aria-label="Project Type"
+                className="bg-transparent border border-[var(--muted)]/40 rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-brand-600"
+                value={state.projectTypes[0] ?? 'web-spa'}
+                onChange={(e) =>
+                  appState.set({ projectTypes: [(e.currentTarget as HTMLSelectElement).value as any] })
+                }
+              >
+                <option value="web-spa">Web App (SPA)</option>
+                <option value="web-mpa">Web App (MPA)</option>
+                <option value="api-rest">API (REST)</option>
+                <option value="cli">CLI</option>
+                <option value="library">Library/SDK</option>
+                <option value="api-graphql">API (GraphQL)</option>
+                <option value="mcp-server">MCP Server</option>
+                <option value="mcp-client">MCP Client</option>
+                <option value="vscode-extension">VS Code Extension</option>
+                <option value="browser-extension">Browser Extension</option>
+                <option value="custom">Custom/Other</option>
+              </select>
+              {state.projectTypes[0] === 'custom' && (
+                <input
+                  type="text"
+                  placeholder="Specify custom project type..."
+                  className="w-full bg-transparent border border-[var(--muted)]/40 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-brand-600"
+                  value={state.customProjectType ?? ''}
+                  onChange={(e) => appState.set({ customProjectType: (e.currentTarget as HTMLInputElement).value })}
+                />
+              )}
+            </div>
           )}
         </div>
       </details>
@@ -93,23 +128,35 @@ export function DecisionAccordion() {
       <details className="rounded border border-[var(--muted)]/30">
         <summary className="cursor-pointer select-none p-3 text-sm font-medium text-[var(--text)]">3. Runtime & Data</summary>
         <div className="p-3 pt-0 text-sm space-y-3">
-          <label className="block mb-2">Primary Runtime</label>
-          <select
-            aria-label="Runtime"
-            className="bg-transparent border border-[var(--muted)]/40 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-brand-600"
-            value={state.runtime}
-            onChange={(e) => appState.set({ runtime: (e.currentTarget as HTMLSelectElement).value as any })}
-          >
-            <option value="browser">Browser</option>
-            <option value="node">Node.js</option>
-            <option value="deno">Deno</option>
-            <option value="bun">Bun</option>
-            <option value="python">Python</option>
-            <option value="rust">Rust</option>
-            <option value="go">Go</option>
-            <option value="java">Java</option>
-            <option value="dotnet">.NET</option>
-          </select>
+          <div className="space-y-2">
+            <label className="block mb-2">Primary Runtime</label>
+            <select
+              aria-label="Runtime"
+              className="w-full bg-transparent border border-[var(--muted)]/40 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-brand-600"
+              value={state.runtime}
+              onChange={(e) => appState.set({ runtime: (e.currentTarget as HTMLSelectElement).value as any })}
+            >
+              <option value="node">Node.js</option>
+              <option value="browser">Browser</option>
+              <option value="python">Python</option>
+              <option value="bun">Bun</option>
+              <option value="deno">Deno</option>
+              <option value="rust">Rust</option>
+              <option value="go">Go</option>
+              <option value="java">Java</option>
+              <option value="dotnet">.NET</option>
+              <option value="custom">Custom/Other</option>
+            </select>
+            {state.runtime === 'custom' && (
+              <input
+                type="text"
+                placeholder="Specify custom runtime..."
+                className="w-full bg-transparent border border-[var(--muted)]/40 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-brand-600"
+                value={state.customRuntime ?? ''}
+                onChange={(e) => appState.set({ customRuntime: (e.currentTarget as HTMLInputElement).value })}
+              />
+            )}
+          </div>
           <div>
             <div className="mb-1">Data Storage</div>
             <div className="grid grid-cols-2 gap-2">
@@ -201,13 +248,14 @@ export function DecisionAccordion() {
           <div>
             <label className="block mb-1">Host</label>
             <select
-              className="bg-transparent border border-[var(--muted)]/40 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-brand-600"
+              className="w-full bg-transparent border border-[var(--muted)]/40 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-brand-600"
               value={state.hosting}
               onChange={(e) => appState.set({ hosting: (e.currentTarget as HTMLSelectElement).value as any })}
             >
+              <option value="vercel">Vercel</option>
+              <option value="netlify">Netlify</option>
               <option value="github-pages">GitHub Pages</option>
-              <option value="vercel">Vercel/Netlify</option>
-              <option value="selfhosted">Server (Fly, Railway)</option>
+              <option value="selfhosted">Self-hosted (Fly, Railway, etc.)</option>
             </select>
           </div>
           <div>
@@ -241,6 +289,14 @@ export function DecisionAccordion() {
               onChange={(e) => appState.set({ documentation: { ...state.documentation, readme: (e.currentTarget as HTMLInputElement).checked } })}
             />
             README
+          </label>
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={state.documentation.agentsMd}
+              onChange={(e) => appState.set({ documentation: { ...state.documentation, agentsMd: (e.currentTarget as HTMLInputElement).checked } })}
+            />
+            AGENTS.md
           </label>
           <label className="flex items-center gap-2">
             License
@@ -281,7 +337,52 @@ export function DecisionAccordion() {
       </details>
 
       <details className="rounded border border-[var(--muted)]/30">
-        <summary className="cursor-pointer select-none p-3 text-sm font-medium text-[var(--text)]">7. Repo Setup</summary>
+        <summary className="cursor-pointer select-none p-3 text-sm font-medium text-[var(--text)]">7. Dev Environment & CI/CD</summary>
+        <div className="p-3 pt-0 text-sm space-y-3">
+          <div className="grid grid-cols-2 gap-2">
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={state.devEnvironment.devcontainer}
+                onChange={(e) => appState.set({ devEnvironment: { ...state.devEnvironment, devcontainer: e.currentTarget.checked } })}
+              />
+              Devcontainer
+            </label>
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={state.devEnvironment.dockerCompose}
+                onChange={(e) => appState.set({ devEnvironment: { ...state.devEnvironment, dockerCompose: e.currentTarget.checked } })}
+              />
+              Docker Compose
+            </label>
+          </div>
+          <div>
+            <label className="block mb-1">CI Pipeline</label>
+            <select
+              className="w-full bg-transparent border border-[var(--muted)]/40 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-brand-600"
+              value={state.devEnvironment.ciPipeline}
+              onChange={(e) => appState.set({ devEnvironment: { ...state.devEnvironment, ciPipeline: (e.currentTarget as HTMLSelectElement).value as any } })}
+            >
+              <option value="none">None</option>
+              <option value="github-actions">GitHub Actions</option>
+              <option value="gitlab-ci">GitLab CI</option>
+              <option value="circleci">CircleCI</option>
+            </select>
+          </div>
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={state.devEnvironment.cdPipeline}
+              onChange={(e) => appState.set({ devEnvironment: { ...state.devEnvironment, cdPipeline: e.currentTarget.checked } })}
+            />
+            CD Pipeline (Continuous Deployment)
+          </label>
+        </div>
+      </details>
+
+      <details className="rounded border border-[var(--muted)]/30">
+        <summary className="cursor-pointer select-none p-3 text-sm font-medium text-[var(--text)]">8. Repo Setup</summary>
         <div className="p-3 pt-0 text-sm space-y-3">
           <div className="grid grid-cols-2 gap-2">
             <label className="flex items-center gap-2">

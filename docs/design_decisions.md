@@ -504,7 +504,253 @@ Generated Prompt Preview
 
 ---
 
-## DD-008: [Placeholder for Future Decisions]
+## DD-008: Custom Field Support for Unlisted Options
+**Date**: 2024-12-15  
+**Status**: Decided  
+**Product Link**: [Product Backlog Epic 3 - UX Enhancements]
+
+### Context
+Users may want to specify project types or runtimes that aren't in the predefined list. Examples include PHP runtime, Mobile App project type, or Desktop Application. Without this flexibility, users are forced to choose the closest option or manually edit the generated prompt.
+
+### Decision
+Add "Custom/Other" option to Project Type and Runtime selectors, with conditional text input fields for custom values:
+
+```typescript
+interface ProjectState {
+  // ... existing fields
+  customProjectType?: string;
+  customRuntime?: string;
+}
+```
+
+**UI Pattern**:
+1. "Custom/Other" appears as last option in dropdowns
+2. When selected, text input field appears below
+3. Custom value is stored separately from the enum value
+4. Prompt generation uses custom value when present
+
+### Rationale
+**Extensibility**: Impossible to enumerate all possible project types and runtimes
+**User Control**: Advanced users can specify exact requirements
+**Minimal Complexity**: Only appears when needed (progressive disclosure)
+**Type Safety**: Maintains TypeScript enums while allowing flexibility
+
+### Consequences
+- ✅ Users can specify any project type or runtime
+- ✅ Maintains type safety for common options
+- ✅ Minimal UI complexity (progressive disclosure)
+- ✅ No breaking changes to existing state
+- ❌ Custom values aren't validated or normalized
+- ❌ No auto-complete for custom fields (could add later)
+
+### Implementation Notes
+- Custom fields are optional (undefined by default)
+- Prompt generation checks for custom values first: `state.customRuntime || state.runtime`
+- In monorepo mode, custom project types work with multi-select
+- Custom values are preserved in URL sharing and localStorage
+
+**Testing**: Added unit tests for custom project type and custom runtime in prompt generation.
+
+---
+
+## DD-009: Integration Expansion and Ordering
+**Date**: 2024-12-15  
+**Status**: Decided  
+**Product Link**: [Product Backlog Epic 3.1]
+
+### Context
+The app initially included ChatGPT, Claude, Cursor, and Perplexity integrations. Gemini (Google's AI assistant) was missing despite being a major player. Additionally, option ordering throughout the app didn't reflect actual usage patterns.
+
+### Decision
+**Added Gemini Integration**:
+```typescript
+export function geminiUrl(prompt: string) {
+  return `https://gemini.google.com/app?q=${enc(prompt)}`;
+}
+```
+
+**Reordered All Options by Popularity/Usage**:
+
+*Project Types*: Web SPA, Web MPA, API REST, CLI, Library (most to least common)
+
+*Runtimes*: Node.js, Browser, Python, Bun, Deno, Rust, Go, Java, .NET (popularity-based)
+
+*Hosting*: Vercel, Netlify, GitHub Pages, Self-hosted (modern platforms first)
+
+*Integrations*: ChatGPT, Claude, Gemini, Cursor, Perplexity (market share order)
+
+### Rationale
+**Discoverability**: Popular options should be easiest to find
+**UX Best Practice**: Most-used options at top reduce cognitive load
+**Completeness**: Major AI assistants should all be supported
+**Mobile UX**: Scrolling through long lists is tedious on mobile
+
+### Consequences
+- ✅ Better UX - common choices are immediate
+- ✅ Faster workflow - less scrolling/searching
+- ✅ Complete coverage of major AI assistants
+- ✅ Aligns with modern development practices
+- ❌ Ordering may shift as popularity changes
+- ❌ Some users may expect alphabetical order
+
+### Implementation Notes
+- Updated default runtime from `browser` to `node` (more common)
+- Updated default hosting from `github-pages` to `vercel` (more modern)
+- Integration button order reflects 2024 market share
+- All integrations tested with proper URL encoding
+
+**Testing**: Added test for Gemini URL encoding, all existing tests pass.
+
+---
+
+## DD-010: AGENTS.md, Devcontainer, and CI/CD Pipeline Support
+**Date**: 2024-12-15  
+**Status**: Decided  
+**Product Link**: [Product Backlog Epic 2, Epic 3 - Enhanced Development Workflow]
+
+### Context
+Modern development increasingly involves coding agents, containerized development environments, and automated CI/CD pipelines. The Project Initiator should guide users to set up these essential components from the start, ensuring projects are built with best practices and automation in mind.
+
+### Decision
+Add comprehensive support for:
+
+1. **AGENTS.md Documentation**
+   - Default: Enabled
+   - Purpose: Document project context for coding agents
+   - Content: Architecture, workflows, patterns, quality standards
+
+2. **Devcontainer Configuration**
+   - Default: Disabled
+   - Purpose: Consistent development environments via Docker
+   - Includes: VS Code settings, tool pre-installation
+
+3. **Docker Compose**
+   - Default: Disabled
+   - Purpose: Local service orchestration (databases, caches, APIs)
+   - Use case: Multi-service development
+
+4. **CI Pipeline Selection**
+   - Default: GitHub Actions
+   - Options: None, GitHub Actions, GitLab CI, CircleCI
+   - Purpose: Automated build, test, lint, security checks
+
+5. **CD Pipeline Toggle**
+   - Default: Enabled
+   - Purpose: Automated deployment to hosting platform
+   - Integration: Works with hosting selection (Vercel, Netlify, etc.)
+
+### Rationale
+
+**AGENTS.md as Default**:
+- Coding agents are increasingly common in development workflows
+- Context preservation is critical for consistent agent assistance
+- Helps both current and future developers/agents understand the project
+- Minimal overhead to create but high value for long-term maintenance
+
+**Devcontainer Optional**:
+- Not all teams use VS Code or Docker-based development
+- More complex to set up and maintain
+- Best for teams needing strict environment consistency
+- Optional to avoid overwhelming simple projects
+
+**CI/CD Prioritization**:
+- Modern development demands automated quality checks
+- GitHub Actions most popular (free for public repos)
+- CD automation reduces deployment friction
+- Quality gates prevent production issues
+
+**Progressive Disclosure**:
+- New section "Dev Environment & CI/CD" groups related options
+- Users can enable/disable based on project needs
+- Sane defaults (AGENTS.md on, CI/CD on) for common cases
+
+### Implementation Details
+
+**State Schema**:
+```typescript
+documentation: {
+  // ... existing fields
+  agentsMd: boolean;  // NEW
+}
+
+devEnvironment: {  // NEW SECTION
+  devcontainer: boolean;
+  dockerCompose: boolean;
+  ciPipeline: 'none' | 'github-actions' | 'gitlab-ci' | 'circleci';
+  cdPipeline: boolean;
+}
+```
+
+**UI Organization**:
+- Section 6: Documentation (added AGENTS.md checkbox)
+- Section 7: Dev Environment & CI/CD (NEW)
+  - Devcontainer, Docker Compose checkboxes
+  - CI Pipeline dropdown
+  - CD Pipeline checkbox
+- Section 8: Repo Setup (renumbered from 7)
+
+**Prompt Generation**:
+- New section: "Development Environment & CI/CD" (conditional)
+- New section: "AGENTS.md Requirements" (conditional)
+- Enhanced "Documentation & Compliance" section
+
+### Consequences
+
+**Positive**:
+- ✅ Complete project scaffolding guidance
+- ✅ Modern development practices encouraged
+- ✅ Agent-assisted development explicitly supported
+- ✅ Automated quality and deployment from day one
+- ✅ Flexible configuration (can disable all)
+
+**Negative**:
+- ❌ More complex UI (7 sections → 8 sections)
+- ❌ Bundle size increase (+2.96 kB, +8.9%)
+- ❌ More decisions for users (offset by good defaults)
+
+**Trade-offs**:
+- Complexity vs. Completeness: Chose completeness with progressive disclosure
+- Bundle Size vs. Features: Acceptable increase for significant value
+- Defaults vs. Flexibility: Opinionated defaults (AGENTS.md on, CI/CD on) with easy opt-out
+
+### Testing
+Added 4 new test cases:
+- AGENTS.md inclusion in prompt
+- Devcontainer configuration rendering
+- CI/CD pipeline configuration
+- Conditional section rendering
+
+**Test Results**: 15/15 passing (was 11/11)
+
+### Migration Path
+**Backward Compatible**: Existing states work without modification.
+
+**New Users**: Benefit from defaults immediately.
+
+**Existing Users**: 
+- Next state update applies new defaults
+- Can explicitly disable if not wanted
+- URL-shared states preserve old configuration
+
+### Future Extensions
+Potential additions based on this pattern:
+- Terraform/IaC templates
+- Monitoring/observability setup
+- API documentation generation (OpenAPI)
+- Database migration frameworks
+- Feature flag configuration
+
+### Related Decisions
+- Builds on DD-007 (Integration expansion)
+- Complements DD-004 (Component architecture)
+- Enhances DD-002 (Technical architecture)
+
+**[Design → Product]**: Fulfills product vision for complete project scaffolding  
+**[Design → QA]**: Comprehensive test coverage for new features
+
+---
+
+## DD-011: [Placeholder for Future Decisions]
 **Date**: TBD  
 **Status**: Pending
 

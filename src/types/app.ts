@@ -8,8 +8,9 @@ export type ProjectType =
   | 'mcp-server'
   | 'mcp-client'
   | 'vscode-extension'
-  | 'browser-extension';
-export type Runtime = 'node' | 'browser' | 'deno' | 'bun' | 'python' | 'rust' | 'go' | 'java' | 'dotnet';
+  | 'browser-extension'
+  | 'custom';
+export type Runtime = 'node' | 'browser' | 'deno' | 'bun' | 'python' | 'rust' | 'go' | 'java' | 'dotnet' | 'custom';
 export type DataStore = 'none' | 'localstorage' | 'indexeddb' | 'sqlite-wasm' | 'hosted-db';
 
 export interface ProjectState {
@@ -19,6 +20,8 @@ export interface ProjectState {
   theme?: 'system' | 'light' | 'dark';
   dataStores?: DataStore[];
   repoMode: 'single' | 'monorepo';
+  customProjectType?: string;
+  customRuntime?: string;
   quality: {
     linting: boolean;
     testing: 'none' | 'unit' | 'e2e';
@@ -40,6 +43,13 @@ export interface ProjectState {
     changelog: boolean;
     contributing: boolean;
     codeOfConduct: boolean;
+    agentsMd: boolean;
+  };
+  devEnvironment: {
+    devcontainer: boolean;
+    dockerCompose: boolean;
+    ciPipeline: 'none' | 'github-actions' | 'gitlab-ci' | 'circleci';
+    cdPipeline: boolean;
   };
   repoSetup: {
     issueTemplates: boolean;
@@ -54,14 +64,15 @@ export interface ProjectState {
 export const defaultState: ProjectState = {
   projectType: 'web-spa',
   projectTypes: ['web-spa'],
-  runtime: 'browser',
+  runtime: 'node',
   theme: 'system',
   dataStores: [],
   repoMode: 'single',
   quality: { linting: true, testing: 'unit', ci: true, formatting: true, conventionalCommits: true },
-  hosting: 'github-pages',
+  hosting: 'vercel',
   packaging: { npm: false, pypi: false, crates: false, docker: false, homebrew: false },
-  documentation: { readme: true, license: 'MIT', changelog: false, contributing: false, codeOfConduct: false },
+  documentation: { readme: true, license: 'MIT', changelog: false, contributing: false, codeOfConduct: false, agentsMd: true },
+  devEnvironment: { devcontainer: false, dockerCompose: false, ciPipeline: 'github-actions', cdPipeline: true },
   repoSetup: { issueTemplates: false, dirStructure: true },
   advanced: { secrets: 'none', security: false },
 };

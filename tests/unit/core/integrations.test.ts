@@ -1,10 +1,15 @@
 import { describe, it, expect } from 'vitest';
-import { chatgptUrl, perplexityUrl, cursorUrl } from '../../../src/core/integrations';
+import { chatgptUrl, geminiUrl, perplexityUrl, cursorUrl } from '../../../src/core/integrations';
 
 describe('integrations URLs', () => {
   it('encodes ChatGPT hash payload', () => {
     const u = chatgptUrl('hello world');
     expect(u).toContain('#hello%20world');
+  });
+  it('encodes Gemini query parameter', () => {
+    const u = geminiUrl('test prompt');
+    expect(u).toContain('q=test%20prompt');
+    expect(u).toContain('gemini.google.com');
   });
   it('encodes Perplexity query', () => {
     const u = perplexityUrl('a b');

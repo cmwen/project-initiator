@@ -34,3 +34,97 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* Accordion animations */
+details {
+  transition: all 0.3s ease-in-out;
+  border-radius: 6px;
+}
+
+details[open] {
+  animation: accordion-open 0.3s ease-out;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+details:not([open]) {
+  animation: accordion-close 0.2s ease-in;
+}
+
+@keyframes accordion-open {
+  from {
+    opacity: 0.9;
+    transform: scale(0.99);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+}
+
+@keyframes accordion-close {
+  from {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+  to {
+    opacity: 0.9;
+    transform: scale(0.99);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  }
+}
+
+/* Smooth content reveal */
+details > div {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+details[open] > div {
+  animation: content-fade-in 0.3s ease-out;
+}
+
+details:not([open]) > div {
+  animation: content-fade-out 0.2s ease-in;
+}
+
+@keyframes content-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes content-fade-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+/* Summary hover effect */
+summary {
+  transition: all 0.2s ease-in-out;
+  border-radius: 6px;
+  padding: 16px;
+  margin: 0;
+}
+
+summary:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  transform: translateY(-1px);
+}
+
+summary:active {
+  transform: translateY(0);
+}

@@ -13,6 +13,9 @@ export function chatgptUrl(prompt: string) {
 export function claudeUrl() {
   return `https://claude.ai/new`;
 }
+export function geminiUrl(prompt: string) {
+  return `https://gemini.google.com/app?q=${enc(prompt)}`;
+}
 export function perplexityUrl(prompt: string) {
   return `https://www.perplexity.ai/?q=${enc(prompt)}`;
 }
@@ -23,6 +26,7 @@ export function cursorUrl(prompt: string) {
 export const integrations = {
   chatgpt(prompt: string) { open(chatgptUrl(prompt)); },
   claude(prompt: string) { open(claudeUrl()); },
+  gemini(prompt: string) { open(geminiUrl(prompt)); },
   perplexity(prompt: string) { open(perplexityUrl(prompt)); },
   cursor(prompt: string) { open(cursorUrl(prompt)); }
 };
